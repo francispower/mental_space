@@ -6,7 +6,24 @@ import numpy as np
 import datetime
 import html
 import matplotlib.pyplot as plt
-from daily_reflection_form import daily_reflection_form
+from daily_reflection_form import save_to_csv
+
+
+def mood_graph(title, x, y):
+    fig, ax = plt.subplots(figsize=(12,6))
+    ax.plot(x, y, marker='o', linestyle='-', color='orange')
+    ax.set_title(title)
+    plt.xticks(rotation=45)
+    return fig
+
+def load_data():
+    """Load the daily reflection data from CSV file."""
+    try:
+        df = pd.read_csv("daily_reflection.csv")
+        df['Date'] = pd.to_datetime(df['Date'])
+        return df
+    except FileNotFoundError:
+        return pd.DataFrame(columns=["Date", "Mood", "Sleep", "Feelings", "Good", "Could Be Better", "Looking Forward", "Stress Triggers", "People Shoutout"])
 
 
 # Function to display the home page
@@ -80,6 +97,26 @@ def home():
     """
 
     st.markdown(custom_css, unsafe_allow_html=True)
+
+
+    cols = st.columns(1)
+
+    df = load_data()
+
+    if not df.empty:
+        with cols[0]:
+            st.markdown("<h2 style='text-align: center;'>Mood over time</h2>", unsafe_allow_html=True)
+
+            try:
+                df['Date'] = pd.to_datetime(df['Date'])
+                df.sort_values('Date', inplace=True)
+                fig = mood_graph("Mood Over Time", df['Date'], df['Mood'])
+                st.pyplot(fig)
+            except FileNotFoundError:
+                st.warning("No data available yet. Please fill out the daily reflection form.")
+    else:
+        with cols[0]:
+            st.warning("Please fill out the daily reflection form to see your mood over time.")
 
 
     pages = [
