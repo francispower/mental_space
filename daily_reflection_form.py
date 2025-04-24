@@ -13,7 +13,7 @@ def daily_reflection_form():
 
     PageBackground.background("https://i.pinimg.com/1200x/5b/d2/d3/5bd2d3fdca8e9ec1f6f3ac4f4c518fd7.jpg")
 
-    st.markdown("<h1 style='text-align: center;'>Daily reflection form</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>My mental space</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center;'>Reflect on your day below</p>", unsafe_allow_html=True)
 
 
